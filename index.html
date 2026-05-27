@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A beautifully designed, responsive stopwatch web application with start, stop, and reset functionality." />
+  <title>Stopwatch — Precision Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <!-- Ambient background orbs -->
+  <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+  <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
+
+  <main id="app">
+    <div class="stopwatch-card" id="stopwatch-card">
+      <!-- Subtle glow ring behind the display -->
+      <div class="glow-ring" id="glow-ring" aria-hidden="true"></div>
+
+      <h1 class="title">Stopwatch</h1>
+
+      <!-- Timer display -->
+      <div class="timer-display" id="timer-display">
+        <span class="time-segment" id="hours">00</span>
+        <span class="time-colon">:</span>
+        <span class="time-segment" id="minutes">00</span>
+        <span class="time-colon">:</span>
+        <span class="time-segment" id="seconds">00</span>
+        <span class="time-dot">.</span>
+        <span class="time-segment time-ms" id="milliseconds">00</span>
+      </div>
+
+      <!-- Progress ring -->
+      <div class="progress-container" id="progress-container" aria-hidden="true">
+        <svg class="progress-ring" viewBox="0 0 200 200">
+          <circle class="progress-ring-bg" cx="100" cy="100" r="90" />
+          <circle class="progress-ring-fill" id="progress-ring-fill" cx="100" cy="100" r="90" />
+        </svg>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls" id="controls">
+        <button class="btn btn-start" id="btn-start" title="Start timer">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="btn-label">Start</span>
+        </button>
+        <button class="btn btn-stop" id="btn-stop" title="Stop timer" disabled>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+          <span class="btn-label">Stop</span>
+        </button>
+        <button class="btn btn-reset" id="btn-reset" title="Reset timer" disabled>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+          </svg>
+          <span class="btn-label">Reset</span>
+        </button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Built with precision &amp; passion</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
