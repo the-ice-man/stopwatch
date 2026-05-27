@@ -70,10 +70,29 @@ body {
   color: var(--text-primary);
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+}
+
+/* Custom Scrollbar */
+body::-webkit-scrollbar {
+  width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* =========================================
@@ -136,10 +155,146 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   min-height: 100dvh;
   padding: var(--space-md);
+  padding-top: calc(var(--space-xl) + 2rem);
+  gap: var(--space-lg);
+}
+
+/* =========================================
+   Auth Bar
+   ========================================= */
+.auth-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: rgba(10, 10, 15, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.auth-signed-out {
+  display: flex;
+  align-items: center;
+}
+
+.auth-signed-in {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Google Sign-In Button */
+.btn-google {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1.3rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.btn-google:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.15);
+}
+
+.btn-google:active {
+  transform: scale(0.97);
+}
+
+.btn-google:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* User Info (signed in) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid rgba(110, 86, 207, 0.5);
+  object-fit: cover;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sign Out Button */
+.btn-sign-out {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: var(--radius-pill);
+  color: var(--red);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.btn-sign-out:hover {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: rgba(248, 113, 113, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-sign-out:active {
+  transform: scale(0.96);
+}
+
+.sign-out-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 /* =========================================
@@ -416,10 +571,259 @@ body {
 }
 
 /* =========================================
+   Timestamps Card
+   ========================================= */
+.timestamps-card {
+  position: relative;
+  width: min(90vw, 580px);
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(40px) saturate(1.4);
+  -webkit-backdrop-filter: blur(40px) saturate(1.4);
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  animation: card-enter 0.8s var(--ease-out) both;
+  animation-delay: 0.15s;
+}
+
+/* Timestamps Header */
+.timestamps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.timestamps-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.timestamps-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.timestamps-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--accent-end);
+  flex-shrink: 0;
+}
+
+.timestamp-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+  border-radius: var(--radius-pill);
+}
+
+/* Clear Button */
+.btn-clear {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.15);
+  border-radius: var(--radius-pill);
+  color: rgba(248, 113, 113, 0.8);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.btn-clear:hover {
+  background: rgba(248, 113, 113, 0.15);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: var(--red);
+  transform: translateY(-1px);
+}
+
+.btn-clear:active {
+  transform: scale(0.96);
+}
+
+.clear-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* Table Wrapper — scrollable */
+.timestamps-table-wrapper {
+  max-height: 320px;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.timestamps-table-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+
+.timestamps-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timestamps-table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+.timestamps-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Table */
+.timestamps-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.timestamps-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.timestamps-table th {
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  background: rgba(18, 18, 28, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.timestamps-table th:first-child {
+  border-radius: var(--radius-md) 0 0 0;
+  width: 3rem;
+  text-align: center;
+}
+
+.timestamps-table th:last-child {
+  border-radius: 0 var(--radius-md) 0 0;
+}
+
+.timestamps-table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  transition: background var(--transition-fast);
+}
+
+.timestamps-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.timestamps-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-index {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  width: 3rem;
+}
+
+.cell-elapsed code {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--green);
+  background: rgba(52, 211, 153, 0.08);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid rgba(52, 211, 153, 0.12);
+}
+
+.cell-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Row enter animation */
+.row-enter {
+  animation: row-fade-in 0.4s var(--ease-out) both;
+}
+
+@keyframes row-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* Empty State */
+.timestamps-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+.empty-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  margin-bottom: 0.3rem;
+}
+
+.timestamps-empty p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.timestamps-empty span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* =========================================
    Footer
    ========================================= */
 .footer {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
+  padding-bottom: var(--space-md);
   text-align: center;
   font-size: clamp(0.65rem, 0.9vw, 0.8rem);
   color: var(--text-muted);
@@ -448,6 +852,49 @@ body {
   .btn-icon {
     width: 1.4rem;
     height: 1.4rem;
+  }
+
+  /* Auth bar */
+  .auth-bar {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .btn-sign-in-text {
+    display: none;
+  }
+
+  .btn-google {
+    padding: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .google-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  /* Timestamps card */
+  .timestamps-card {
+    padding: var(--space-md);
+  }
+
+  .timestamps-table th,
+  .timestamps-table td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .cell-elapsed code {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .cell-date {
+    font-size: 0.68rem;
   }
 }
 
