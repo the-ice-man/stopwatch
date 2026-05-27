@@ -5,7 +5,9 @@ const SUPABASE_URL = 'https://lycfedsjonvtpiijpiuc.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5Y2ZlZHNqb252dHBpaWpwaXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4NDg5NTIsImV4cCI6MjA5NTQyNDk1Mn0.OpsFZkKPWe3IFuuOPN40CDMgV-XuJhaG979Pr9FP1OY';
 
 // Initialize Supabase client
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Note: the CDN exposes `window.supabase` so we use a different name for our client
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+console.log('✅ Supabase client initialized');
 
 // ——— DOM References ———
 const authBar         = document.getElementById('auth-bar');
@@ -24,9 +26,10 @@ let currentUser = null;
 // ——— Sign In with Google ———
 async function signInWithGoogle() {
   btnSignIn.disabled = true;
-  btnSignIn.querySelector('.btn-sign-in-text').textContent = 'Signing in…';
+  const textEl = btnSignIn.querySelector('.btn-sign-in-text');
+  if (textEl) textEl.textContent = 'Signing in…';
 
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { data, error } = await db.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: window.location.origin + window.location.pathname,
@@ -36,13 +39,13 @@ async function signInWithGoogle() {
   if (error) {
     console.error('Sign-in error:', error.message);
     btnSignIn.disabled = false;
-    btnSignIn.querySelector('.btn-sign-in-text').textContent = 'Sign in with Google';
+    if (textEl) textEl.textContent = 'Sign in with Google';
   }
 }
 
 // ——— Sign Out ———
 async function signOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await db.auth.signOut();
   if (error) {
     console.error('Sign-out error:', error.message);
   }
@@ -83,13 +86,14 @@ function updateAuthUI(user) {
 }
 
 // ——— Listen for auth state changes ———
-supabase.auth.onAuthStateChange((event, session) => {
+db.auth.onAuthStateChange((event, session) => {
+  console.log('Auth state changed:', event);
   updateAuthUI(session?.user || null);
 });
 
 // ——— Initialize: check current session ———
 (async () => {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await db.auth.getSession();
   updateAuthUI(session?.user || null);
 })();
 

@@ -1,5 +1,6 @@
 // ============================================
 // timestamps.js — Pause Timestamps CRUD & Rendering
+// Uses `db` (Supabase client) and `currentUser` from auth.js
 // ============================================
 
 // ——— DOM References ———
@@ -34,7 +35,7 @@ function formatDate(isoStr) {
 async function savePauseTimestamp(elapsedMs) {
   if (!currentUser) return;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('pause_timestamps')
     .insert({
       user_id: currentUser.id,
@@ -58,7 +59,7 @@ async function savePauseTimestamp(elapsedMs) {
 async function loadTimestamps() {
   if (!currentUser) return;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('pause_timestamps')
     .select('*')
     .eq('user_id', currentUser.id)
@@ -79,7 +80,7 @@ async function clearTimestamps() {
   // Confirmation
   if (!confirm('Clear all your pause history? This cannot be undone.')) return;
 
-  const { error } = await supabase
+  const { error } = await db
     .from('pause_timestamps')
     .delete()
     .eq('user_id', currentUser.id);
